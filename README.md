@@ -15,7 +15,7 @@
 </code></pre>
 
 <p>Entre na pasta do projeto:</p>
-<pre><code>cd globalsolutiongs1
+<pre><code>cd coolhelp
 </code></pre>
 
 <h2>📦 Instalação das Dependências</h2>
