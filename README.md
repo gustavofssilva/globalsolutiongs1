@@ -30,7 +30,7 @@
 <p>Para iniciar o projeto localmente, utilize:</p>
 <pre><code>yarn dev</code></pre>
 <p>Ou, se estiver usando NPM:</p>
-<pre><code>npm run dev</code></pre>
+<pre><code>npx expo start</code></pre>
 
 <h2>💡 Funcionalidades do Projeto</h2>
 <ul>
