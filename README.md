@@ -36,33 +36,11 @@
 <ul>
     <li>Busca de alertas meteorológicos do <strong>INMET</strong> para qualquer estado brasileiro.</li>
     <li>Utiliza a API do INMET para obter dados atualizados e exibir alertas de forma clara.</li>
+    <li>Utiliza a API do Openweathermap para obter dados atualizados da temperatura atual de acordo com seu local.</li>
+    <li>Utiliza a API do Weatherapi para obter dados atualizados da previsão do tempo.</li>
     <li>Implementação em <strong>JavaScript (Node.js)</strong> com <strong>axios</strong> para requisições HTTP.</li>
     <li>Tratamento de erros e exibição de mensagens personalizadas caso não existam alertas para o estado pesquisado.</li>
 </ul>
-
-<h2>🔍 Estrutura do Código</h2>
-<ul>
-    <li><strong>getInmetAlert.js</strong>: Função principal que faz a requisição para a API do INMET e retorna o alerta (ou null, caso não haja nenhum).</li>
-    <li><strong>index.js</strong> (ou arquivo principal): Onde é feita a chamada à função e exibido o alerta no terminal ou em outra interface que desejar.</li>
-</ul>
-
-<h2>🔧 Como Usar</h2>
-<p>No seu arquivo principal, você pode utilizar a função <code>getInmetAlert</code> assim:</p>
-
-<pre><code>import getInmetAlert from './getInmetAlert.js';
-
-const uf = 'SP'; // Substitua pelo estado desejado (por exemplo, 'RJ', 'MG', etc.)
-
-getInmetAlert(uf).then(alert => {
-  if (alert) {
-    console.log('Título:', alert.title);
-    console.log('Descrição:', alert.description);
-    console.log('Nível:', alert.level);
-  } else {
-    console.log('Nenhum alerta encontrado para o estado:', uf);
-  }
-});
-</code></pre>
 
 <h2>🖌️ Estilo e Organização</h2>
 <ul>
@@ -74,6 +52,8 @@ getInmetAlert(uf).then(alert => {
 <ul>
     <li>Desenvolvedor: <strong>Gustavo F.S. Silva</strong></li>
     <li>API: <a href="https://portal.inmet.gov.br/">INMET - Instituto Nacional de Meteorologia</a></li>
+    <li>API: <a href="https://api.weatherapi.com/"></a></li>
+    <li>API: <a href="https://api.openweathermap.org"></a></li>
 </ul>
 
 <h2>📄 Licença</h2>
