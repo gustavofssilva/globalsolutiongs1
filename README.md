@@ -53,7 +53,7 @@
     <li>Desenvolvedor: <strong>Gustavo F.S. Silva</strong></li>
     <li>API: <a href="https://portal.inmet.gov.br/">INMET - Instituto Nacional de Meteorologia</a></li>
     <li>API: <a href="https://api.weatherapi.com/">WeatherApi</a></li>
-    <li>API: <a href="https://api.openweathermap.org"></a>OpenWeatherMap</li>
+    <li>API: <a href="https://api.openweathermap.org">OpenWeatherMap</a></li>
 </ul>
 
 <h2>📄 Licença</h2>
