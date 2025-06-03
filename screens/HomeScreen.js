@@ -54,7 +54,8 @@ const regionToUF = {
 };
 
 export default function HomeScreen({ navigation }) {
-  const [loading, setLoading] = useState(true);
+  const [loadingWeather, setLoadingWeather] = useState(true);
+  const [loadingInmet, setLoadingInmet] = useState(true);
   const [weather, setWeather] = useState(null);
   const [locationInfo, setLocationInfo] = useState(null);
   const [inmetAlert, setInmetAlert] = useState(null);
@@ -70,8 +71,6 @@ export default function HomeScreen({ navigation }) {
         location.coords.latitude,
         location.coords.longitude
       );
-      // Para testar banner de calor, temp forçada:
-      // weatherData.temp = 31;
       setWeather(weatherData);
 
       const forecastData = await getWeatherForecast(
@@ -86,19 +85,25 @@ export default function HomeScreen({ navigation }) {
       });
       setLocationInfo(address);
 
+      setLoadingWeather(false);
+      setErrorMsg(null);
+
       const uf = regionToUF[address.region];
       if (uf) {
         const alertData = await getInmetAlert(uf);
         setInmetAlert(alertData);
       }
-      setErrorMsg(null);
+      setLoadingInmet(false);
     } catch (error) {
       setErrorMsg('Erro ao atualizar clima.');
+      setLoadingWeather(false);
+      setLoadingInmet(false);
     }
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
+    setLoadingInmet(true);
     await fetchWeather();
     setRefreshing(false);
   };
@@ -108,12 +113,12 @@ export default function HomeScreen({ navigation }) {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permissão negada para acessar localização.');
-        setLoading(false);
+        setLoadingWeather(false);
+        setLoadingInmet(false);
         return;
       }
 
       await fetchWeather();
-      setLoading(false);
     })();
   }, []);
 
@@ -138,10 +143,10 @@ export default function HomeScreen({ navigation }) {
     return backgroundImages.Default;
   };
 
-  if (loading) {
+  if (loadingWeather) {
     return (
       <View style={[styles.container, styles.center]}>
-        <ActivityIndicator size="large" color="#ff6600" />
+        <ActivityIndicator size="large" color="#013055" />
         <Text style={styles.loadingText}>Carregando clima...</Text>
       </View>
     );
@@ -185,45 +190,25 @@ export default function HomeScreen({ navigation }) {
           </>
         )}
 
-        {forecast &&
-          forecast.forecast &&
-          forecast.forecast.forecastday && (
-            <View style={styles.forecastContainer}>
-              {forecast.forecast.forecastday
-                .filter((day) => {
-                  const forecastDate = new Date(day.date + 'T00:00:00');
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-                  const tomorrow = new Date(today);
-                  tomorrow.setDate(today.getDate() + 1);
-
-                  return (
-                    forecastDate.getTime() === today.getTime() ||
-                    forecastDate.getTime() === tomorrow.getTime()
-                  );
-                })
-                .map((day) => (
-                  <View key={day.date} style={styles.forecastDay}>
-                    <Text style={styles.forecastDate}>
-                      {new Date(day.date).toLocaleDateString('pt-BR', {
-                        weekday: 'long',
-                        day: 'numeric',
-                        month: 'short',
-                      })}
-                    </Text>
-                    <Text style={styles.forecastCondition}>
-                      {day.day.condition.text}
-                    </Text>
-                    <Text style={styles.forecastTemp}>
-                      Máx: {Math.round(day.day.maxtemp_c)}°C / Mín:{' '}
-                      {Math.round(day.day.mintemp_c)}°C
-                    </Text>
-                  </View>
-                ))}
+        {forecast?.forecast?.forecastday?.[1] && (
+          <View style={styles.forecastContainer}>
+            <View key={forecast.forecast.forecastday[1].date} style={styles.forecastDay}>
+              <Text style={styles.forecastDate}>
+                {new Date(forecast.forecast.forecastday[1].date).toLocaleDateString('pt-BR', {
+                  weekday: 'long',
+                  day: 'numeric',
+                  month: 'short',
+                })}
+              </Text>
+              <Text style={styles.forecastTemp}>
+                Máx: {Math.round(forecast.forecast.forecastday[1].day.maxtemp_c)}°C / Mín:{' '}
+                {Math.round(forecast.forecast.forecastday[1].day.mintemp_c)}°C
+              </Text>
             </View>
-          )}
+          </View>
+        )}
 
-        {inmetAlert && (
+        {!loadingInmet && inmetAlert && (
           <View style={styles.alertBox}>
             <Text style={styles.alertTitle}>{inmetAlert.title}</Text>
             <Text style={styles.alertMessage}>{inmetAlert.description}</Text>
@@ -260,7 +245,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#fff',
+    color: '#013055',
   },
   error: {
     color: '#ffcccc',

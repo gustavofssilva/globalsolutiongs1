@@ -6,6 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 export default function WelcomeScreen() {
   const navigation = useNavigation();
 
+  const handleStart = () => {
+    navigation.replace('Main');
+  };
+
   return (
     <LinearGradient
       colors={['#ffff00', '#ffb300']}
@@ -20,7 +24,9 @@ export default function WelcomeScreen() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.replace('Main')}
+          onPress={handleStart}
+          accessibilityLabel="Botão para começar o app"
+          accessibilityHint="Vai para a tela principal"
         >
           <Text style={styles.buttonText}>Começar</Text>
         </TouchableOpacity>
@@ -46,13 +52,6 @@ const styles = StyleSheet.create({
     height: 240,
     marginBottom: 30,
     resizeMode: 'contain',
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: '200',
-    color: '#fff',
-    marginBottom: 12,
-    textAlign: 'center',
   },
   subtitle: {
     fontSize: 18,
